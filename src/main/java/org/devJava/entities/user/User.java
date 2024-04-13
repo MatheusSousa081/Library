@@ -1,14 +1,21 @@
 package org.devJava.entities.user;
 
+import org.devJava.entities.book.Book;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private Long id;
     private String name;
     private int age;
+    private List <Book> borrowedBooks;
 
     public User(Long id,String name,int age) {
         this.id = id;
         this.name = name;
         this.age = age;
+        borrowedBooks = new ArrayList<>();
     }
 
     public Long getId() {
@@ -33,6 +40,10 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public List<Book> getBorrowedBooks() {
+        return borrowedBooks;
     }
 
     @Override
