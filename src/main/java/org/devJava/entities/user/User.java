@@ -1,9 +1,11 @@
 package org.devJava.entities.user;
 
 import org.devJava.entities.book.Book;
+import org.devJava.exceptions.UserException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     private Long id;
@@ -11,7 +13,11 @@ public class User {
     private int age;
     private List <Book> borrowedBooks;
 
-    public User(Long id,String name,int age) {
+    public User(Long id,String name,int age) throws UserException {
+        if (id < 0) {
+            throw new UserException("Id invalid");
+        }
+
         this.id = id;
         this.name = name;
         this.age = age;

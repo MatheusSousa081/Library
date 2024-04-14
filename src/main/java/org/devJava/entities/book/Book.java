@@ -1,5 +1,7 @@
 package org.devJava.entities.book;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Book {
     private String title;
     private String author;
@@ -15,12 +17,12 @@ public class Book {
         AVAILABLE, LOANED;
     }
 
-    public Book(String title, String author, Gender gender, int year, Status status) {
+    public Book(String title, String author, Gender gender, int year) {
         this.title = title;
         this.author = author;
         this.gender = gender;
         this.year = year;
-        this.status = status;
+        this.status = Status.AVAILABLE;
     }
 
     public String getTitle() {
@@ -61,5 +63,11 @@ public class Book {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return title + "by " + author + ", published in " + year +
+                "\nGender:" + gender.name() + ", " + status.name();
     }
 }
