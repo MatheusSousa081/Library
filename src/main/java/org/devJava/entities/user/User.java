@@ -24,6 +24,15 @@ public class User {
         borrowedBooks = new ArrayList<>();
     }
 
+    public User createUser(Long id, String name, int age) throws UserException{
+        if (id < 0) {
+            throw new UserException("Id invalid");
+        }
+
+        borrowedBooks = new ArrayList<>();
+        return new User(id, name, age);
+    }
+
     public Long getId() {
         return id;
     }

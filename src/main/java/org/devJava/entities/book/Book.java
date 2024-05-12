@@ -2,11 +2,13 @@ package org.devJava.entities.book;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Year;
+
 public class Book {
-    private String title;
-    private String author;
-    private Gender gender;
-    private int year;
+    private final String title;
+    private final String author;
+    private final Gender gender;
+    private final Year year;
     private Status status;
 
     public enum Gender {
@@ -17,7 +19,7 @@ public class Book {
         AVAILABLE, LOANED;
     }
 
-    public Book(String title, String author, Gender gender, int year) {
+    public Book(String title, String author, Gender gender, Year year) {
         this.title = title;
         this.author = author;
         this.gender = gender;
@@ -29,32 +31,16 @@ public class Book {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public int getYear() {
+    public Year getYear() {
         return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 
     public Status getStatus() {
@@ -68,6 +54,6 @@ public class Book {
     @Override
     public String toString() {
         return title + "by " + author + ", published in " + year +
-                "\nGender:" + gender.name() + ", " + status.name();
+                "\nGender: " + gender.name() + ", " + status.name();
     }
 }

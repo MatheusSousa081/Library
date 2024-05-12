@@ -1,16 +1,13 @@
 package org.devJava.entities.library;
 
-import org.devJava.Service.ListOrganizer;
 import org.devJava.entities.book.Book;
 import org.devJava.entities.user.User;
 import org.devJava.exceptions.LibraryException;
 import org.devJava.exceptions.UserException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.time.Year;
+import java.util.*;
 
 public class LibrarySystem implements Library{
     private List<Book> listOfBooks = new ArrayList<>();
@@ -24,12 +21,14 @@ public class LibrarySystem implements Library{
     public void addBook(@NotNull Book book) {
         listOfBooks.add(book);
         System.out.println("Book added successfully");
+        listOfBooks.sort(Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
     }
 
     @Override
-    public void addBook(@NotNull String title, @NotNull String author, Book.@NotNull Gender gender, @NotNull int year) {
+    public void addBook(@NotNull String title, @NotNull String author, Book.@NotNull Gender gender, @NotNull Year year) {
         listOfBooks.add(new Book(title, author, gender, year));
         System.out.println("Book added successfully");
+        listOfBooks.sort(Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
     }
 
     @Override
@@ -40,19 +39,17 @@ public class LibrarySystem implements Library{
 
     @Override
     public void removeBook(@NotNull String title) {
-        for (int i = 0; i <= listOfBooks.size(); i++) {
-            if (listOfBooks.get(i).getTitle().equalsIgnoreCase(title)) {
-                listOfBooks.remove(i);
-                System.out.println("Book removed successfully");
-                return;
-            }
+        int index = Collections.binarySearch(listOfBooks, new Book(title, "", Book.Gender.ROMANCE, Year.of(0)), Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
+        if (index >= 0){
+            listOfBooks.remove(index);
+            System.out.println("Book removed successfully");
+        } else {
+            System.out.println("Book not found");
         }
     }
 
-
     @Override
     public void listBook() {
-        listOfBooks.sort(Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
         for (Book book : listOfBooks) {
             System.out.println(book);
         }
@@ -60,7 +57,6 @@ public class LibrarySystem implements Library{
 
     @Override
     public void listBorrowedBooks() {
-        borrowedBooks.sort(Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
         for (Book book : borrowedBooks) {
             System.out.println(book);
         }
@@ -79,6 +75,7 @@ public class LibrarySystem implements Library{
                 }
                 book.setStatus(Book.Status.LOANED);
                 borrowedBooks.add(book);
+                borrowedBooks.sort(Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
                 return;
             }
         }
