@@ -1,30 +1,34 @@
 package org.devJava.entities.book;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.Year;
 
 public class Book {
+    private final int id;
     private final String title;
     private final String author;
-    private final Gender gender;
     private final Year year;
+    private final Gender gender;
     private Status status;
 
     public enum Gender {
-        ACTION, THRILLER, ADVENTURE, ROMANCE, COMEDY;
+        ACTION, ADVENTURE, ROMANCE, COMEDY;
     }
 
     public enum Status {
         AVAILABLE, LOANED;
     }
 
-    public Book(String title, String author, Gender gender, Year year) {
+    public Book(String title, String author, Year year, int id, Gender gender) {
         this.title = title;
         this.author = author;
-        this.gender = gender;
         this.year = year;
-        this.status = Status.AVAILABLE;
+        this.id = id;
+        this.gender = gender;
+        status = Status.AVAILABLE;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -35,12 +39,12 @@ public class Book {
         return author;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
     public Year getYear() {
         return year;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 
     public Status getStatus() {
