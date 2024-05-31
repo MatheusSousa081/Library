@@ -1,11 +1,9 @@
 package org.devJava.entities.book;
 
 import org.devJava.exceptions.LibraryException;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.time.MonthDay;
 import java.time.Year;
 
 public final class Book {
