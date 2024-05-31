@@ -1,14 +1,20 @@
 package org.devJava.entities.book;
 
+import org.devJava.exceptions.LibraryException;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.time.MonthDay;
 import java.time.Year;
 
-public class Book {
-    private final int id;
-    private final String title;
-    private final String author;
-    private final Year year;
-    private final Gender gender;
-    private Status status;
+public final class Book {
+    private final @NotNull int id;
+    private final @NotNull String title;
+    private final @NotNull String author;
+    private final @NotNull Year year;
+    private final @NotNull Gender gender;
+    private @Nullable Status status;
 
     public enum Gender {
         ACTION, ADVENTURE, ROMANCE, COMEDY;
@@ -18,13 +24,20 @@ public class Book {
         AVAILABLE, LOANED;
     }
 
-    public Book(String title, String author, Year year, int id, Gender gender) {
+    public Book(@NotNull int id, @NotNull String title, @NotNull String author, @NotNull Year year, @NotNull Gender gender) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.year = year;
-        this.id = id;
         this.gender = gender;
         status = Status.AVAILABLE;
+    }
+
+    public static Book create(int id, String title, String author, Year year, Gender gender) throws LibraryException {
+        if (id < 0) {
+            throw new LibraryException("Id invalid!");
+        }
+        return new Book(id, title, author, year, gender);
     }
 
     public int getId() {

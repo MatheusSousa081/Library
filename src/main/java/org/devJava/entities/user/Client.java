@@ -1,18 +1,24 @@
 package org.devJava.entities.user;
 
 import org.devJava.entities.book.Book;
+import org.devJava.exceptions.LibraryException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
-    private final int id;
-    private String name;
-    private String email;
-    private final int limitBorrowedBooks = 5;
+    private final @NotNull int id;
+    private final @NotNull String name;
+    private final @NotNull String email;
+    private final @Nullable int limitBorrowedBooks = 5;
     private List<Book> borrowedBooksFromClient;
 
-    public Client(int id, String name, String email) {
+    public Client(int id, String name, String email) throws LibraryException {
+        if (id < 0) {
+            throw new LibraryException("Id invalid!");
+        }
         this.id = id;
         this.name = name;
         this.email = email;
@@ -27,16 +33,8 @@ public class Client {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public int getLimitBorrowedBooks() {
