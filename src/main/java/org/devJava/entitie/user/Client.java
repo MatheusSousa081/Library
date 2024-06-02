@@ -44,6 +44,10 @@ public class Client {
         return borrowedBooksFromClient;
     }
 
+    public int size() {
+        return getBorrowedBooksFromClient().size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

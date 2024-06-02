@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.time.Year;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BookRepository implements CrudRepository<Book, Integer> {
     private final @NotNull Database connection;
@@ -88,17 +90,23 @@ public class BookRepository implements CrudRepository<Book, Integer> {
     }
 
     @Override
-    public String findAll() {
-        String query = "SELECT * FROM books";
-        StringBuilder result = new StringBuilder();
+    public Set<Book> findAll() {
+        String query = "SELECT * FROM library.books";
+        Set<Book> books = new HashSet<>();
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                result.append("Id: ").append(resultSet.getInt("id")).append(", ").append(resultSet.getString("title")).append(" by ").append(resultSet.getString("author")).append("published in ").append(Year.of(resultSet.getInt("year"))).append(", ").append(Book.Gender.valueOf(resultSet.getString("gender"))).append(", ").append(Book.Status.valueOf(resultSet.getString("status"))).append("\n");
+                Book book = new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("author"),
+                        Year.of(resultSet.getInt("year")),
+                        Book.Gender.valueOf(resultSet.getString("gender")));
+                books.add(book);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error read the books");
         }
-        return result.toString();
+        return books;
     }
 }
