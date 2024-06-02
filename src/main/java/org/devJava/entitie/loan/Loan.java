@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
+import java.util.Objects;
 
 public final class Loan {
     private final int userId;
@@ -41,5 +42,18 @@ public final class Loan {
 
     public @Nullable  Instant getReturnDate() {
         return returnDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Loan loan = (Loan) o;
+        return userId == loan.userId && bookId == loan.bookId && Objects.equals(loanDate, loan.loanDate) && Objects.equals(returnDate, loan.returnDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, bookId, loanDate, returnDate);
     }
 }

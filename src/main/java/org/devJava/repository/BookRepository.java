@@ -8,9 +8,13 @@ import java.sql.*;
 import java.time.Year;
 
 public class BookRepository implements CrudRepository<Book, Integer> {
-    private Database connection;
+    private final @NotNull Database connection;
 
-    public Database getConnection() {
+    public BookRepository(@NotNull Database connection) {
+        this.connection = connection;
+    }
+
+    public @NotNull Database getConnection() {
         return connection;
     }
 
@@ -25,6 +29,7 @@ public class BookRepository implements CrudRepository<Book, Integer> {
             preparedStatement.setString(5, book.getGender().name());
             preparedStatement.setString(6, book.getStatus().name());
             preparedStatement.executeUpdate();
+            System.out.println("Book added successfully!");
         } catch (SQLException e) {
             throw new RuntimeException("Error adding the book in repository");
         }
@@ -55,12 +60,31 @@ public class BookRepository implements CrudRepository<Book, Integer> {
 
     @Override
     public void update(@NotNull Book book) {
-
+        String query = "UPDATE library.books SET title=?, author=?, year=?, gender=?, status=? WHERE id=?";
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, book.getTitle());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setInt(3, book.getYear().getValue());
+            preparedStatement.setString(4, book.getGender().name());
+            preparedStatement.setString(5, book.getStatus().name());
+            preparedStatement.setInt(6, book.getId());
+            preparedStatement.executeUpdate();
+            System.out.println("Book updated successfully!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error update the book");
+        }
     }
 
     @Override
     public void delete(@NotNull Integer id) {
-
+        String query = "DELETE FROM library.books WHERE id=?";
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            System.out.println("Book removed successfully!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error delete the book");
+        }
     }
 
     @Override

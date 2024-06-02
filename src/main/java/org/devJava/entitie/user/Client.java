@@ -6,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Client {
     private final int id;
     private final @NotNull String name;
     private final @NotNull String email;
-    private final int LIMIT_BORROWED_BOOKS = 5;
     private final @NotNull List<Book> borrowedBooksFromClient;
 
     public Client(int id,@NotNull String name,@NotNull String email) {
@@ -36,11 +36,24 @@ public class Client {
         return email;
     }
 
-    public int getLIMIT_BORROWED_BOOKS() {
-        return LIMIT_BORROWED_BOOKS;
+    public int getLimitBorrowedBooks() {
+        return 5;
     }
 
     public @NotNull List<Book> getBorrowedBooksFromClient() {
         return borrowedBooksFromClient;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return id == client.id && Objects.equals(name, client.name) && Objects.equals(email, client.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email);
     }
 }
