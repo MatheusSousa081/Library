@@ -1,4 +1,4 @@
-package org.devJava.exceptions;
+package org.devJava.exception;
 
 public class LibraryException extends Exception{
     public LibraryException(String message) {

@@ -18,7 +18,7 @@ public class Database {
 
     private @Nullable Connection connection;
 
-    public Connection getConnection() {
+    public @Nullable Connection getConnection() {
         return connection;
     }
 
@@ -32,10 +32,6 @@ public class Database {
 
     public @Nullable String getPassword() {
         return password;
-    }
-
-    public final void showInfo() throws SQLException {
-        System.out.println(connection.getClientInfo());
     }
 
     public final void createConnection() throws SQLException {

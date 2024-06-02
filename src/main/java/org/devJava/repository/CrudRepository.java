@@ -1,12 +1,11 @@
 package org.devJava.repository;
 
-import java.sql.SQLException;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
-public interface CrudRepository<T, ID> {
-    void create(T object);
-    String read(ID id);
-    void update(T entity);
-    void delete(ID id);
+public interface CrudRepository< T, ID> {
+    void create(@NotNull T object);
+    String read(@NotNull ID id);
+    void update(@NotNull T entity);
+    void delete(@NotNull ID id);
     String findAll();
 }

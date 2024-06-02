@@ -1,28 +1,19 @@
-package org.devJava.entities.book;
+package org.devJava.entitie.book;
 
-import org.devJava.exceptions.LibraryException;
+import org.devJava.exception.LibraryException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.time.Year;
 
 public final class Book {
-    private final @NotNull int id;
+    private final int id;
     private final @NotNull String title;
     private final @NotNull String author;
     private final @NotNull Year year;
     private final @NotNull Gender gender;
-    private @Nullable Status status;
+    private @NotNull Status status;
 
-    public enum Gender {
-        ACTION, ADVENTURE, ROMANCE, COMEDY;
-    }
-
-    public enum Status {
-        AVAILABLE, LOANED;
-    }
-
-    public Book(@NotNull int id, @NotNull String title, @NotNull String author, @NotNull Year year, @NotNull Gender gender) {
+    public Book(int id, @NotNull String title, @NotNull String author, @NotNull Year year, @NotNull Gender gender) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -42,27 +33,27 @@ public final class Book {
         return id;
     }
 
-    public String getTitle() {
+    public @NotNull String getTitle() {
         return title;
     }
 
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return author;
     }
 
-    public Year getYear() {
+    public @NotNull Year getYear() {
         return year;
     }
 
-    public Gender getGender() {
+    public @NotNull Gender getGender() {
         return gender;
     }
 
-    public Status getStatus() {
+    public @NotNull Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull Status status) {
         this.status = status;
     }
 
@@ -70,5 +61,13 @@ public final class Book {
     public String toString() {
         return title + "by " + author + ", published in " + year +
                 "\nGender: " + gender.name() + ", " + status.name();
+    }
+
+    public enum Gender {
+        ACTION, ADVENTURE, ROMANCE, COMEDY
+    }
+
+    public enum Status {
+        AVAILABLE, LOANED
     }
 }
