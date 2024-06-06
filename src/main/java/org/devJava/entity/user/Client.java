@@ -1,6 +1,6 @@
-package org.devJava.entitie.user;
+package org.devJava.entity.user;
 
-import org.devJava.entitie.book.Book;
+import org.devJava.entity.book.Book;
 
 import org.jetbrains.annotations.NotNull;
 

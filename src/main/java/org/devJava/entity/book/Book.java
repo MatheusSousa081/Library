@@ -1,4 +1,4 @@
-package org.devJava.entitie.book;
+package org.devJava.entity.book;
 
 import org.devJava.exception.LibraryException;
 import org.jetbrains.annotations.NotNull;

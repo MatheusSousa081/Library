@@ -1,13 +1,11 @@
 package org.devJava.repository;
 
-import org.devJava.entitie.book.Book;
+import org.devJava.entity.book.Book;
 import org.devJava.repository.Connection.Database;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.time.Year;
-import java.util.HashSet;
-import java.util.Set;
 
 public class BookRepository implements CrudRepository<Book, Integer> {
     private final @NotNull Database connection;
@@ -16,12 +14,12 @@ public class BookRepository implements CrudRepository<Book, Integer> {
         this.connection = connection;
     }
 
-    public @NotNull Database getConnection() {
+    public final @NotNull Database getConnection() {
         return connection;
     }
 
     @Override
-    public void create(@NotNull Book book) {
+    public final void create(@NotNull Book book) {
         String query = "INSERT  INTO library.books (id, title, author, `year`, gender, status) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setInt(1, book.getId());
@@ -38,7 +36,7 @@ public class BookRepository implements CrudRepository<Book, Integer> {
     }
 
     @Override
-    public String read(@NotNull Integer id) {
+    public final String read(@NotNull Integer id) {
         String query = "SELECT * FROM library.books WHERE id=?";
         try {
             try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)){
@@ -61,7 +59,7 @@ public class BookRepository implements CrudRepository<Book, Integer> {
     }
 
     @Override
-    public void update(@NotNull Book book) {
+    public final void update(@NotNull Book book) {
         String query = "UPDATE library.books SET title=?, author=?, year=?, gender=?, status=? WHERE id=?";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, book.getTitle());
@@ -78,7 +76,7 @@ public class BookRepository implements CrudRepository<Book, Integer> {
     }
 
     @Override
-    public void delete(@NotNull Integer id) {
+    public final void delete(@NotNull Integer id) {
         String query = "DELETE FROM library.books WHERE id=?";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -90,23 +88,18 @@ public class BookRepository implements CrudRepository<Book, Integer> {
     }
 
     @Override
-    public Set<Book> findAll() {
+    public final String findAll() {
         String query = "SELECT * FROM library.books";
-        Set<Book> books = new HashSet<>();
+        StringBuilder result = new StringBuilder();
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                Book book = new Book(
-                        resultSet.getInt("id"),
-                        resultSet.getString("title"),
-                        resultSet.getString("author"),
-                        Year.of(resultSet.getInt("year")),
-                        Book.Gender.valueOf(resultSet.getString("gender")));
-                books.add(book);
+                result.append("Id: ").append(resultSet.getInt("id")).append(", ").append(resultSet.getString("title")).append(" by ").append(resultSet.getString("author")).append("published in ")
+                        .append(Year.of(resultSet.getInt("year"))).append(", ").append(Book.Gender.valueOf(resultSet.getString("gender"))).append(", ").append(Book.Status.valueOf(resultSet.getString("status"))).append("\n");
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error read the books");
         }
-        return books;
+        return result.toString();
     }
 }

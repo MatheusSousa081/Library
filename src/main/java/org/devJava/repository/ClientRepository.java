@@ -1,15 +1,12 @@
 package org.devJava.repository;
 
-import org.devJava.entitie.user.Client;
+import org.devJava.entity.user.Client;
 import org.devJava.repository.Connection.Database;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class ClientRepository implements CrudRepository<Client, Integer> {
     private final @NotNull Database connection;
@@ -18,12 +15,12 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
         this.connection = connection;
     }
 
-    public @NotNull Database getConnection() {
+    public final @NotNull Database getConnection() {
         return connection;
     }
 
     @Override
-    public void create(@NotNull Client client) {
+    public final void create(@NotNull Client client) {
         String query = "INSERT INTO library.users (id name, email, quantity_books_borrowed) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setInt(1, client.getId());
@@ -38,7 +35,7 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
     }
 
     @Override
-    public String read(@NotNull Integer id) {
+    public final String read(@NotNull Integer id) {
         String query = "Select * FROM library.users WHERE id=?";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -58,7 +55,7 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
     }
 
     @Override
-    public void delete(@NotNull Integer id) {
+    public final void delete(@NotNull Integer id) {
         String query = "DELETE FROM library.users WHERE id=?";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -70,7 +67,7 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
     }
 
     @Override
-    public void update(@NotNull Client client) {
+    public final void update(@NotNull Client client) {
         String query = "UPDATE library.users SET name=?, email=?, quantity_books_borrowed=? WHERE id=?";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, client.getName());
@@ -85,22 +82,18 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
     }
 
     @Override
-    public Set<Client> findAll() {
+    public final String findAll() {
         String query = "SELECT * FROM library.users";
-        Set<Client> clients = new HashSet<>();
+        StringBuilder result = new StringBuilder();
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                Client client = new Client(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("email")
-                );
-                clients.add(client);
+                result.append("Id: ").append(resultSet.getInt("id")).append(", ").append(resultSet.getString("name")).append(", ").append(resultSet.getString("email"))
+                        .append(", ").append(resultSet.getInt("quantity_books_borrowed")).append(" books borrowed.\n");
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error read the books");
         }
-        return clients;
+        return result.toString();
     }
 }
