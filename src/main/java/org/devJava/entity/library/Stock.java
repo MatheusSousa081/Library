@@ -22,8 +22,8 @@ public class Stock implements Iterable<@NotNull StockItem> {
         books.add(new StockItem(Book.create(id, title, author, year, gender), quantity));
     }
 
-    public boolean remove(@NotNull String title) {
-        return books.removeIf(book -> book.getBook().getTitle().equalsIgnoreCase(title));
+    public boolean remove(@NotNull int id) {
+        return books.removeIf(book -> book.getBook().getId() == id);
     }
 
     public boolean remove(@NotNull Book book) {

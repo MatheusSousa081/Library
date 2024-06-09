@@ -12,7 +12,9 @@ public final class Loan {
     private final int userId;
     private final int bookId;
     private final @NotNull Instant loanDate;
-    private final @Nullable Instant returnDate;
+    private @Nullable Instant returnDate;
+
+    private static int loanId = 0;
 
     private Loan(int id, int userId, int bookId, @NotNull Instant loanDate, @Nullable Instant returnDate) {
         this.id = id;
@@ -22,11 +24,8 @@ public final class Loan {
         this.returnDate = returnDate;
     }
 
-    public static @NotNull Loan create(int id, int userId, int bookId,@NotNull Instant loanDate,@Nullable Instant returnDate) throws LibraryException {
-        if (loanDate.isAfter(returnDate)) {
-            throw new LibraryException("Loan date must be less than return date");
-        }
-        return new Loan(id, userId, bookId, loanDate, returnDate);
+    public static @NotNull Loan create(int userId, int bookId, @NotNull Instant loanDate, @Nullable Instant returnDate) throws LibraryException {
+        return new Loan(loanId++, userId, bookId, loanDate, returnDate);
     }
 
     public int getId() {
@@ -45,8 +44,22 @@ public final class Loan {
         return loanDate;
     }
 
+
     public @Nullable Instant getReturnDate() {
         return returnDate;
+    }
+
+    public void setReturnDate(@Nullable Instant returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id +
+                ", UserId: " + userId +
+                ", BookId: " + bookId +
+                ", loan date:" + loanDate +
+                ", return date :" + returnDate;
     }
 
     @Override

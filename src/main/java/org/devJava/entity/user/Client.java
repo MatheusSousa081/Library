@@ -4,24 +4,22 @@ import org.devJava.entity.book.Book;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Client {
     private final int id;
     private final @NotNull String name;
     private final @NotNull String email;
-    private final @NotNull List<Book> borrowedBooksFromClient;
+    private final @NotNull Set<Book> borrowedBooksFromClient;
 
-    public Client(int id,@NotNull String name,@NotNull String email) {
+    public Client(int id, @NotNull String name,@NotNull String email) {
         if (id < 0) {
             throw new IllegalArgumentException("Id invalid!");
         }
         this.id = id;
         this.name = name;
         this.email = email;
-        borrowedBooksFromClient = new ArrayList<>();
+        borrowedBooksFromClient = new HashSet<>();
     }
 
     public int getId() {
@@ -40,12 +38,17 @@ public class Client {
         return 5;
     }
 
-    public @NotNull List<Book> getBorrowedBooksFromClient() {
+    public @NotNull Set<Book> getBorrowedBooksFromClient() {
         return borrowedBooksFromClient;
     }
 
     public int size() {
         return getBorrowedBooksFromClient().size();
+    }
+
+    @Override
+    public String toString() {
+        return id + ", " + name + ", " + email + "\n";
     }
 
     @Override

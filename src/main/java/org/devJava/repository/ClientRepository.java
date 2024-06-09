@@ -20,9 +20,9 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
     }
 
     @Override
-    public final void create(@NotNull Client client) {
-        String query = "INSERT INTO library.users (id name, email, quantity_books_borrowed) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+    public final void create(@NotNull Client client) throws SQLException {
+        String query = "INSERT INTO library.users (id, name, email, quantity_books_borrowed) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);) {
             preparedStatement.setInt(1, client.getId());
             preparedStatement.setString(2, client.getName());
             preparedStatement.setString(3, client.getEmail());
@@ -30,8 +30,9 @@ public class ClientRepository implements CrudRepository<Client, Integer> {
             preparedStatement.executeUpdate();
             System.out.println("Client added successfully!");
         } catch (SQLException e) {
-            throw new RuntimeException("Error adding the user in repository");
+            throw new RuntimeException("Error adding the client");
         }
+
     }
 
     @Override

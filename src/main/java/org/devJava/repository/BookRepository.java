@@ -76,15 +76,13 @@ public class BookRepository implements CrudRepository<Book, Integer> {
     }
 
     @Override
-    public final void delete(@NotNull Integer id) {
+    public final void delete(@NotNull Integer id) throws SQLException{
         String query = "DELETE FROM library.books WHERE id=?";
-        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-            System.out.println("Book removed successfully!");
-        } catch (SQLException e) {
-            throw new RuntimeException("Error delete the book");
-        }
+        PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
+        System.out.println("Book removed successfully!");
+
     }
 
     @Override
@@ -94,8 +92,7 @@ public class BookRepository implements CrudRepository<Book, Integer> {
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                result.append("Id: ").append(resultSet.getInt("id")).append(", ").append(resultSet.getString("title")).append(" by ").append(resultSet.getString("author")).append("published in ")
-                        .append(Year.of(resultSet.getInt("year"))).append(", ").append(Book.Gender.valueOf(resultSet.getString("gender"))).append(", ").append(Book.Status.valueOf(resultSet.getString("status"))).append("\n");
+                result.append("Id: ").append(resultSet.getInt("id")).append(", ").append(resultSet.getString("title")).append(" by ").append(resultSet.getString("author")).append("published in ").append(Year.of(resultSet.getInt("year"))).append(", ").append(Book.Gender.valueOf(resultSet.getString("gender"))).append(", ").append(Book.Status.valueOf(resultSet.getString("status"))).append("\n");
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error read the books");
